@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from Register.forms import regist_form
-from Register.models import user_info
+from .forms import regist_form
+from .models import user_info
 
 def home(request):
     return render(request, 'home.html')
@@ -12,12 +12,12 @@ def add(request):
         f = regist_form(request.POST)
         if f.is_valid():
             if 'submit' in request.POST:
-                user_info = user_info()
-                user_info.id_card = request.POST['id_card']
-                user_info.user_name = request.POST['username']
-                user_info.phone_number = request.POST['phone_number']
+                user = user_info()
+                user.id_card = request.POST['id_card']
+                user.user_name = request.POST['user_name']
+                user.phone_number = request.POST['phone_number']
                 try:
-                    user_info.save()
+                    user.save(force_insert=True)
                     return render(request, 'result.html', {'form': '注册成功'})
                 except Exception as e:
                     raise e
